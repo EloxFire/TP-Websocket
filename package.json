@@ -18,5 +18,6 @@
   "homepage": "https://github.com/EloxFire/TP-Websocket#readme",
   "dependencies": {
     "socket.io": "^2.3.0"
-  }
+  },
+  "devDependencies": {}
 }
