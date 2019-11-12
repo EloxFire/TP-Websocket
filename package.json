@@ -1,0 +1,22 @@
+{
+  "name": "tp-websocket",
+  "version": "1.0.0",
+  "description": "TP YNOV Websocket",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EloxFire/TP-Websocket.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EloxFire/TP-Websocket/issues"
+  },
+  "homepage": "https://github.com/EloxFire/TP-Websocket#readme",
+  "dependencies": {
+    "socket.io": "^2.3.0"
+  }
+}
