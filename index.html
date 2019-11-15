@@ -14,17 +14,18 @@
     </nav>
   </header>
 
-  <main id="message-container" class="container">
+  <main id="chat" class="container">
+
   </main>
 
   <footer class="container fixed-bottom mb-5">
-    <form>
+    <form id="messageForm">
       <div class="form-group">
-        <label for="userText">Message</label>
-        <textarea class="form-control" id="userText" placeholder="Enter your message here."></textarea>
-        <small id="tip" class="form-text text-muted">Your message will never be keeped in any dadabase.</small>
+        <label for="message">Message</label>
+        <textarea class="form-control" id="message" placeholder="Enter your message here."></textarea>
+        <small class="form-text text-muted">Your message will never be keeped in any dadabase.</small>
       </div>
-      <button id="send" type="button" class="btn btn-success">Send message</button>
+      <input type="submit" class="btn btn-success" value="Send message"/>
     </form>
   </footer>
 
@@ -33,33 +34,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="/socket.io/socket.io.js"></script>
+
 <script type="text/javascript">
-let socket = io.connect('http://localhost:3000');
-let messageDOM = document.getElementById('userText');
-let displayDOM = document.getElementById('message-container');
+  let socket = io.connect('http://localhost:3000');
+  let messageForm = $('#messageForm');
+  let message = $('#message');
+  let chat = $('#chat');
 
-let active = 0;
+  messageForm.submit(function(e){
+    e.preventDefault();
+    console.log('Submitted !');
+    socket.emit('send', message.val());
+    message.val('');
+  });
 
-// On demande le pseudo au visiteur...
-let pseudo = prompt('Quel est votre pseudo ?');
-// Et on l'envoie avec le signal "petit_nouveau" (pour le différencier de "message")
-socket.emit('petit_nouveau', pseudo);
-displayDOM.innerHTML = "Utilisateurs actifs : " + active;
-
-// On affiche une boîte de dialogue quand le serveur nous envoie un "message"
-socket.on('message', function(message) {
-  alert('Le serveur a un message pour vous : ' + message);
-})
-
-// Lorsqu'on clique sur le bouton, on envoie un "message" au serveur
-$('#poke').click(function () {
-  socket.emit('message', pseudo + ' verifie sa connexion.');
-})
-
-// Lorsqu'on clique sur le boutton send, on envoye notre message au serveur.
-$('#send').click(function () {
-  let message_envoye = messageDOM.value;
-  socket.emit('sendMessage', message_envoye);
-})
+  socket.on("new message", function(data){
+    chat.append("<div class=well>" + data.msg + "</div>");
+  });
 </script>
 </html>
